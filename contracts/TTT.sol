@@ -40,6 +40,10 @@ contract TTT {
     function playerExists(address player) public view returns(uint){
         return is_player[player];
     }
+    
+    function getTurn() public view returns(uint){
+        return turn;
+    }
 
 
     function move(uint position)

@@ -13,7 +13,7 @@ contract("TTT", async(accounts) => {
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////    
 
     it("tests that player 1 registers", async () => {
-			await ticTacToe.register({from: accounts[1],value: web3.toWei(0.000000000000131072,'ether')});
+      await ticTacToe.register({from: accounts[1],value: web3.toWei(0.000000000000131072,'ether')});
       let val1 = await ticTacToe.playerExists(accounts[1]);
       assert.equal(val1, 1, "player isn't registered");
 
@@ -29,6 +29,36 @@ contract("TTT", async(accounts) => {
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    it("tests that more than 2 players cant registers", async () => {
+      try {
+      await ticTacToe.register({from: accounts[4],value: web3.toWei(0.000000000000131072,'ether')});
+     }
+      catch(err){
+      let val1 = await ticTacToe.totalPlayers();
+      assert.equal(val1, 2, "more then 2 players registered!!");
+      }
+    });
+
+    it("Test for turn variable", async () => {
+      var turn = await ticTacToe.getTurn();
+      assert.equal(turn.c[0], 0, "Player1's turn");
+      await ticTacToe.move(0,{from: accounts[1]});
+      var turn = await ticTacToe.getTurn();
+      assert.equal(turn.c[0], 1, "Turn not working properly");
+    });
+
+    it("tests that player 1 cant play again", async () => {
+      try{
+      await ticTacToe.move(0,{from: accounts[1]});
+    }
+    catch(err){
+      var turn = await ticTacToe.getTurn();
+      assert.equal(turn.c[0], 1, "Player1's turn");
+    }
+
+    });
+
+
 
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
