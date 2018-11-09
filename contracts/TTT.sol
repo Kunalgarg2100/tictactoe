@@ -40,11 +40,19 @@ contract TTT {
     function playerExists(address player) public view returns(uint){
         return is_player[player];
     }
-    
+
     function getTurn() public view returns(uint){
         return turn;
     }
 
+    function findWinner()
+    public
+    view
+    returns
+    (uint)
+    {
+        return c_winner();
+    }
 
     function move(uint position)
     returns

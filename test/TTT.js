@@ -58,6 +58,17 @@ contract("TTT", async(accounts) => {
 
     });
 
+    it("Testing for winner", async () => {
+      await ticTacToe.move(1,{from: accounts[2]});
+      await ticTacToe.move(3,{from: accounts[1]});
+      await ticTacToe.move(5,{from: accounts[2]});
+      await ticTacToe.move(6,{from: accounts[1]});
+      var c = await ticTacToe.findWinner();
+      console.log(c.c[0])
+      assert.equal(c.c[0],1,"Player 1")
+
+    });
+
 
 
 
