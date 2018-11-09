@@ -10,6 +10,7 @@ contract TTT {
     uint[][]  tests = [[0,1,2],[3,4,5],[6,7,8], [0,3,6],[1,4,7],[2,5,8], [0,4,8],[2,4,6]];
     uint public pFee;
     mapping(address => uint256) public pendingReturns;
+    bool game_end = false;
 
     constructor(uint _pFee){
         moderator = msg.sender;
@@ -45,36 +46,23 @@ contract TTT {
     returns
     (string)
     {
-        uint winner = c_winner();
+        require(game_end == false, "This game has ended");
+        /*uint winner = c_winner();
         if(winner == 1){
             return "Game is up and player 1 won the game";
         }
         else if(winner == 2){
             return "Game is up and player 2 won the game";
         }
-        if(turn == 0){
-            if(players[0] != msg.sender){
-                return "Sorry this is not your turn";
-            }
-        }
-        if(turn == 1){
-            if(players[1] != msg.sender){
-                return "Sorry this is not your turn";
-            }
-        }
-        if(position >= 0 && position <= 8){
-            if(board[position] == 0){
-                board[position] = turn+1;
-                turn = 1 - turn;
-                return "You have placed at the required position";
-            }
-            else{
-                return "This position is already filled";
-            }
-        }
-        else{
-            return "Please provide a valid position";
-        }
+        */
+        require(players[turn] == msg.sender, "Sorry this is not your turn");
+
+        require(position >= 0 && position <= 8, "Invalid Position");
+        require(board[position] == 0, "This position is already filled");
+        board[position] = turn+1;
+        turn = 1 - turn;
+        c_winner();
+        return "You have placed at the required position";
     }
 
     function c_winner()
@@ -83,8 +71,10 @@ contract TTT {
     {
         for(uint i = 0;i < 8; i++){
             uint[] memory m = tests[i];
-            if(board[m[0]] != 0 && board[m[0]] == board[m[1]] && board[m[1]] == board[m[2]])
+            if(board[m[0]] != 0 && board[m[0]] == board[m[1]] && board[m[1]] == board[m[2]]){
+                game_end = true;
                 return board[m[0]];
+            }
         }
         return 0;
     }
@@ -118,7 +108,7 @@ contract TTT {
         else{
             ret = "No one has won the game yet";
         }
-        bytes memory a = new bytes(4);
+        bytes memory a = new bytes(3);
         byte[] memory signs = new byte[](3);
             signs[0] = "-";
             signs[1] = "1";
@@ -126,11 +116,11 @@ contract TTT {
         for(uint i = 0; i < 3; i++){
             bytes(a)[i] = signs[board[i]];
         }
-        bytes memory b = new bytes(4);
+        bytes memory b = new bytes(3);
         for(i = 0; i < 3; i++){
             bytes(b)[i] = signs[board[i+3]];
         }
-        bytes memory c = new bytes(4);
+        bytes memory c = new bytes(3);
         for(i = 0; i < 3; i++){
             bytes(c)[i] = signs[board[i+6]];
         }
