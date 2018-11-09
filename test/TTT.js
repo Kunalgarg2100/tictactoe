@@ -6,21 +6,21 @@ contract("TTT", async(accounts) => {
     it("tests that moderator invoked the game", async () => {
         ticTacToe = await TTT.new(pFee, {from: accounts[0]});
         let addr = await ticTacToe.moderatorExists();
-        assert.equal(addr, accounts[0], "moderator didnt start the game");
+        assert.equal(addr, accounts[0], "moderatorExiststor didnt start the game");
 
     });
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////    
 
     it("tests that player 1 registers", async () => {
-			await ticTacToe.register({from: accounts[1], value: pFee});
+			await ticTacToe.register({from: accounts[1],value: web3.toWei(0.000000000000131072,'ether')});
       let val1 = await ticTacToe.playerExists(accounts[1]);
       assert.equal(val1, 1, "player isn't registered");
 
     });
 
     it("tests that player 2 registers", async () => {
-      await ticTacToe.register({from: accounts[2], value: pFee});
+      await ticTacToe.register({from: accounts[2],value: web3.toWei(0.000000000000131072,'ether')});
       let val1 = await ticTacToe.playerExists(accounts[2]);
       assert.equal(val1, 1, "player isn't registered");
 
@@ -29,17 +29,7 @@ contract("TTT", async(accounts) => {
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    it("tests that more than 2 players cant registers", async () => {
-			ticTacToe.register(accounts[4]);
-			let val1 = await ticTacToe.totalPlayers();
-      assert.equal(val1, 2, "more then 2 players registered!!");
-    });
 
-		it("tests that more than 2 players cant registers", async () => {
-			ticTacToe.register(accounts[5]);
-			let val1 = await ticTacToe.totalPlayers();
-      assert.equal(val1, 2, "more then 2 players registered!!");
-    });
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,7 +32,7 @@ contract TTT {
         return moderator;
     }
 
-    function totalPlayer() public view returns(uint){
+    function totalPlayers() public view returns(uint){
         return num_players;
     }
 
