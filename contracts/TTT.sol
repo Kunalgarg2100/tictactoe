@@ -28,6 +28,18 @@ contract TTT {
         pendingReturns[msg.sender] = msg.value - pFee;
     }
 
+    function moderatorExists() public view returns(address){
+        return moderator;
+    }
+
+    function totalPlayer() public view returns(uint){
+        return num_players;
+    }
+
+    function playerExists(address player) public view returns(uint){
+        return is_player[player];
+    }
+
 
     function move(uint position)
     returns
