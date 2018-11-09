@@ -50,7 +50,7 @@ contract TTT {
                 return "Sorry this is not your turn";
             }
         }
-        if(position >= 1 && position <= 9){
+        if(position >= 0 && position <= 8){
             if(board[position] == 0){
                 board[position] = turn+1;
                 turn = 1 - turn;
@@ -89,6 +89,40 @@ contract TTT {
             msg.sender.transfer(amount);
         }
         return true;
+    }
+
+    function get_current_state()
+    returns
+    (string, string, string, string)
+    {
+        string memory ret = "";
+        uint winner = c_winner();
+        if(winner == 1){
+            ret = "Player 1 is the winner";
+        }
+        else if(winner == 2){
+            ret = "Player 2 is the winner";
+        }
+        else{
+            ret = "No one has won the game yet";
+        }
+        bytes memory a = new bytes(4);
+        byte[] memory signs = new byte[](3);
+            signs[0] = "-";
+            signs[1] = "1";
+            signs[2] = "2";
+        for(uint i = 0; i < 3; i++){
+            bytes(a)[i] = signs[board[i]];
+        }
+        bytes memory b = new bytes(4);
+        for(i = 0; i < 3; i++){
+            bytes(b)[i] = signs[board[i+3]];
+        }
+        bytes memory c = new bytes(4);
+        for(i = 0; i < 3; i++){
+            bytes(c)[i] = signs[board[i+6]];
+        }
+        return (ret, string(a), string(b), string(c));
     }
 
 }
